@@ -11,3 +11,38 @@ ul.nav li a {
 .WorkshopLayout {
   margin-top: 40px;
 }
+
+.WorkshopLayout button, .WorkshopLayout .radio-inline {
+  margin-right: 15px;
+}
+.WorkshopLayout .number-field-container {
+  width: 100px;
+  display: flex;
+  margin-right: 15px;
+  float: right;
+}
+
+.WorkshopLayout .number-field-container .control-label {
+    margin-top: 8px;
+    margin-right: 10px;
+}
+
+.WorkshopLayout .number-field-container .number-field {
+  width: 50px;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 220px;
+  margin-top: 20px;
+}
+
+.items .item {
+  width: 50px;
+  border: 1px solid black;
+  border-radius: 3px;
+  text-align: center;
+  vertical-align: middle;
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { PageHeader, Grid, Col, 
-  Navbar, Jumbotron, Button, 
+import { PageHeader, Grid, Col, FormControl, ControlLabel,
+  Navbar, Jumbotron, Radio, Button, 
   ListGroup, Nav, NavDropdown, 
   MenuItem, Panel } from 'react-bootstrap';
 import { BrowserRouter } from 'react-router-dom';
@@ -16,7 +16,7 @@ class App extends Component {
             <Grid>
               <Navbar.Header>
                 <Navbar.Brand>
-                  <a href="/">Lafore Workshop Applets</a>
+                  <a href="/">Lafore Workshop Apps</a>
                 </Navbar.Brand>
                 <Navbar.Toggle />
                 <Nav>
@@ -44,17 +44,17 @@ class WorkshopLayout extends Component {
   
   render() {
     return (
-      <div class="WorkshopLayout container">
+      <div className="WorkshopLayout container">
         <Grid>
           <PageHeader>
             {this.props.title}
           </PageHeader>
-          <Col xs={12} md={7}>
+          <Col xs={12} md={9}>
             <Panel>
               {this.props.leftPanelContent}
             </Panel>
           </Col>
-          <Col xs={6} md={5}>
+          <Col xs={6} md={3}>
             <Panel>
               {this.props.rightPanelContent}
             </Panel>
@@ -77,7 +77,32 @@ class ArrayWS extends Component {
         }
         leftPanelContent={
           <div>
-            <p>Some content for the left panel</p>
+            <Button>New</Button>
+            <Button>Fill</Button>
+            <Button>Ins</Button>
+            <Button>Find</Button>
+            <Button>Del</Button>
+             <Radio name="dups" inline>
+               Dups OK
+             </Radio>
+             <Radio name="dups" checked="checked" inline>
+               No dups
+             </Radio>
+	     <div className="number-field-container">
+	       <ControlLabel>Number:</ControlLabel>
+	       <FormControl
+		 type="text"
+		 className="number-field"
+		 //value={this.state.value}
+		 //placeholder="Enter text"
+		 //onChange={this.handleChange}
+	       />
+	     </div>
+             <div class="items">
+               <div class="item">
+                 1
+               </div>
+             </div>
           </div>
         }
         rightPanelContent={
