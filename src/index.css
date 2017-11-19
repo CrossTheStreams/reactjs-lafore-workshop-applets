@@ -41,8 +41,30 @@ ul.nav li a {
 
 .items .item {
   width: 50px;
+  height: 22px;
   border: 1px solid black;
   border-radius: 3px;
   text-align: center;
-  vertical-align: middle;
+  margin-bottom: 5px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  color: #eaeaea;
+  padding-top: 1px;
+  margin-left: 20px;
 }
+
+.array-item-index {
+  float: left;
+  display: inline-block;
+  margin-top: 1px;
+}
+
+.active .array-item-index {
+  color: red;
+  font-weight: bold;
+}
+
+.active .item {
+  outline: 3px red solid;
+}
+
+
