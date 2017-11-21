@@ -67,13 +67,87 @@ export default class ArrayWS extends Component {
   }
 
   handleDeleteClick = () => {
+    const array = this.state.array,
+          numberFieldValue = parseInt(this.state.numberFieldValue, 10),
+          activeIndex = this.state.activeIndex,
+          hasDeletedItem = this.state.hasDeletedItem,
+          filledArrayItems = array.filter((n) => {
+            return n !== undefined;
+          });
+
+    const deleteInfoText = function(key, idx) {
+      return `Looking for item to delete with key ${key} at index ${idx}`;
+    }
+
+    // We've deleted an item, and we're shifting items "into the hole", as La Fore says.
+    //   also, check that the next item isn't a duplicate
+    if (hasDeletedItem && array[activeIndex] === undefined && activeIndex < (filledArrayItems.length) && array[activeIndex + 1] != numberFieldValue) {
+      let newArray = array.slice();
+      newArray[activeIndex] = newArray[activeIndex + 1];
+      newArray[activeIndex + 1] = undefined;
+      this.setState({
+        array: newArray,
+        activeIndex: (activeIndex+1),
+        rightPanelText: `Shifted item ${newArray[activeIndex]} from index ${(activeIndex+1)} to ${activeIndex}`
+      });
+      return;
+    }
+
+    if (this.state.currentOperation !== 'delete') {
+      alert(`Looking for item to delete with key ${numberFieldValue}`);
+      this.setState({
+        currentOperation: 'delete',
+        rightPanelText: deleteInfoText(numberFieldValue,0),
+        activeIndex: 0
+      });
+    } else {
+      if (numberFieldValue !== undefined) {
+        if (numberFieldValue === array[activeIndex]) {
+          alert(`Have found and deleted item with key ${numberFieldValue} at index ${activeIndex}`);
+            let newArray = array.slice();
+            newArray[activeIndex] = undefined;
+            this.setState({
+              array: newArray,
+              rightPanelText: `Deleted item with key ${numberFieldValue} at index ${activeIndex}`,
+              hasDeletedItem: true
+            });
+        } else {
+          if (array[activeIndex + 1] === undefined || (activeIndex + 1) >= array.length) {
+            if (hasDeletedItem) {
+              alert(`Shifting complete! Total items: ${filledArrayItems.length}`);
+              this.setState({
+                activeIndex: 0,
+                rightPanelText: "Press any button",
+                hasDeletedItem: false
+              });
+            } else {
+              alert(`Cant' locate item with key ${numberFieldValue}`);
+              this.setState({
+                activeIndex: 0,
+                rightPanelText: "Press any button"
+              });
+            }
+          } else {
+            this.setState(
+              (prevState) => {
+                const newActiveIndex = prevState.activeIndex += 1;
+                return ({
+                  activeIndex: newActiveIndex,
+                  rightPanelText: deleteInfoText(numberFieldValue,newActiveIndex)
+                });
+              }
+            );
+          }
+        }
+      }
+    }
   }
 
   handleInsertClick = () => { 
     const numberFieldValue = this.state.numberFieldValue,
           allowDuplicates = this.state.allowDuplicates,
           array = this.state.array,
-          indexOfNumberFieldValue = array.findIndex((n) => {return(n == numberFieldValue)})
+          indexOfNumberFieldValue = array.findIndex((n) => {return(n === numberFieldValue)})
     let activeIndex = this.state.activeIndex;
 
     if (numberFieldValue === undefined || numberFieldValue < 0 || numberFieldValue > 999) {
@@ -113,39 +187,51 @@ export default class ArrayWS extends Component {
   }
 
   onAllowDuplicatesChange = (event) => {
-    console.log("onAllowDuplicatesChange");
-    console.log(event.target.value);
     let allowDuplicates = event.target.value;
     this.setState({allowDuplicates: allowDuplicates});
   }
 
   handleFindClick = () => { 
     const array = this.state.array,
-          numberFieldValue = this.state.numberFieldValue;
-    let activeIndex = this.state.activeIndex;
+          numberFieldValue = this.state.numberFieldValue,
+          activeIndex = this.state.activeIndex;
+
+    const findInfoText = function(key, idx) {
+      return `Looking for key ${key} at index ${idx}`;
+    }
 
     if (this.state.currentOperation !== 'find') {
+      alert(`Looking for item with key ${numberFieldValue}`);
       this.setState({
         currentOperation: 'find',
-        rightPanelText: 'Enter key of item to find'
+        rightPanelText: findInfoText(numberFieldValue,0),
+        activeIndex: 0
       });
     } else {
       if (numberFieldValue !== undefined) {
         if (numberFieldValue === array[activeIndex]) {
           alert(`Found number ${numberFieldValue} at index ${activeIndex}`);
             this.setState({
-              activeIndex: 0
+              activeIndex: 0,
+              rightPanelText: "Press any button"
             });
         } else {
           if (array[activeIndex + 1] === undefined || (activeIndex + 1) >= array.length) {
+            alert(`Cant' locate item with key ${numberFieldValue}`);
             this.setState({
               activeIndex: 0,
-              rightPanelText: `Cant' locate item with key ${numberFieldValue}`
+              rightPanelText: "Press any button"
             });
           } else {
-            this.setState((prevState) => ({
-              activeIndex: prevState.activeIndex += 1
-            }));
+            this.setState(
+              (prevState) => {
+                const newActiveIndex = prevState.activeIndex += 1;
+                return ({
+                  activeIndex: newActiveIndex,
+                  rightPanelText: findInfoText(numberFieldValue,newActiveIndex)
+                });
+              }
+            );
           }
         }
       }
